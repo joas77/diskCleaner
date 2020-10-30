@@ -23,15 +23,6 @@ public class FindDuplicates
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         long fileSize = attrs.size();
 
-        if (attrs.isSymbolicLink()) {
-            System.out.format("Symbolic link: %s ", file);
-        } else if (attrs.isRegularFile()) {
-            System.out.format("Regular file: %s ", file);
-        } else {
-            System.out.format("Other: %s ", file);
-        }
-        System.out.println("(" + fileSize + "bytes)");
-
         LinkedList<Path> files;
         if(null == duplicates.get(fileSize)){
             files = new LinkedList<Path>();
@@ -49,7 +40,7 @@ public class FindDuplicates
         duplicates.forEach((size, paths)->{
 
             if ( paths.size() >= 2 ) {
-                System.out.format("****** Files with size: (%s) bytes *****\n", size);
+                System.out.format("\n****** Files with size: (%s) bytes *****\n", size);
                 for (Path path : paths) {
                     System.out.println(path);
                 }
