@@ -16,22 +16,24 @@ public class FindDuplicates
     private Map<Long, LinkedList<Path>> duplicates;
 
     public FindDuplicates(){
-        duplicates = new HashMap<Long, LinkedList<Path>>();
+        duplicates = new HashMap<>();
     }
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        long fileSize = attrs.size();
+        if(attrs.isRegularFile()) {
 
-        LinkedList<Path> files;
-        if(null == duplicates.get(fileSize)){
-            files = new LinkedList<Path>();
-        }else {
-            files = duplicates.get(fileSize);
+            long fileSize = attrs.size();
+            LinkedList<Path> files;
+            if (null == duplicates.get(fileSize)) {
+                files = new LinkedList<>();
+            } else {
+                files = duplicates.get(fileSize);
+            }
+
+            files.add(file);
+            duplicates.put(fileSize, files);
         }
-
-        files.add(file);
-        duplicates.put(fileSize, files);
 
         return CONTINUE;
     }
